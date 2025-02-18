@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+    <link rel="stylesheet" href="styles.css">
+   
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Simples Agenda</h2>
+            <nav>
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Agendamento</a></li>
+                    <li><a href="#">Caixa</a></li>
+                    <li><a href="#" class="active">Clientes</a></li>
+                    <li><a href="#">Profissional</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <header>
+                <h1>CLIENTES</h1>
+                <nav>
+                    <button class="btn">+ NOVO CLIENTE</button>
+                    <span>
+                        <input type="text" placeholder="Pesquisar por...">
+                        <button class="btn-pesquisar">PESQUISAR</button>
+                    </span>
+                    <button class="btn">EXPORTAR PARA EXCEL</button>
+                    <span class="span-header-2">
+                        <p class="p1">TOTAL</p> 
+                        <p class="p2">360 cliente(s)</p>
+                    </span>
+                </nav>
+            </header>
+            <section class="form-container">
+                <h2>CADASTRO DE CLIENTES</h2>
+                <div class="form-layout">
+                    <form id="client-form">
+                        <span>
+                            <label>Nome*</label>
+                            <input type="text" required>
+                        </span>
+                        <div class="row">
+                            <span>
+                                <label>CPF</label>
+                                <input type="text">
+                            </span>
+                            <span>
+                                <label>RG</label>
+                                <input type="text">
+                            </span>
+                            <span>
+                                <label>CNPJ</label>
+                                <input type="text">
+                            </span>
+                            <span>
+                                <label>Data de Nascimento</label>
+                                <input type="date">
+                            </span>
+                        </div>
+                        <div id="contacts">
+                            <nav>
+                                <h3>Contatos*</h3>
+                                <button type="button" id="add-contact">+ Contatos</button>
+                            </nav>
+                            <div class="contact">
+                                
+                            </div>
+                        </div>
+                        <button type="submit" class="btn save">Salvar</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
