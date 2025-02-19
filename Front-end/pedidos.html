@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Pedidos</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Simples Agenda</h2>
+            <nav>
+                <ul>
+                    <li><a href="/">Clientes</a></li>
+                    <li><a href="#" class="active">Pedidos</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="content">
+            <header>
+                <h1>PEDIDOS</h1>
+                <nav>
+                    <button class="btn">+ NOVO PEDIDO</button>
+                    <span>
+                        <input type="text" placeholder="Pesquisar por...">
+                        <button class="btn-pesquisar">PESQUISAR</button>
+                    </span>
+                    <button class="btn">EXPORTAR PARA EXCEL</button>
+                    <span class="span-header-2">
+                        <p class="p1">TOTAL</p> 
+                        <p class="p2">120 pedido(s)</p>
+                    </span>
+                </nav>
+            </header>
+            <section class="form-container">
+                <h2>CADASTRO DE PEDIDOS</h2>
+                <div class="form-layout">
+                    <form id="order-form">
+                        <span>
+                            <label>Nome do Cliente*</label>
+                            <input type="text" id="nome-cliente" required>
+                        </span>
+                        <span>
+                            <label>CPF do Cliente</label>
+                            <input id="cpf-cliente" type="text" required>
+                        </span>
+
+                        <span>
+                            <label>Teste Técnico</label>
+                            <input type="text" id="teste-tecnico">
+                        </span>
+
+                        <span>
+                            <label>Peso (kg)*</label>
+                            <input class="input-peso" type="number" id="peso" step="0.1" required>
+                        </span>
+
+                        <nav>
+                            <label>CEP*</label>
+                            <input type="text" id="cep" required>
+                            <button type="button" id="buscar-cep" class="btn-loc">Buscar CEP</button>
+                            <button type="button" id="ver-mapa" class="btn-loc">Ver no mapa</button>
+                        </nav>
+                        <div id="map-container">
+                            <button id="fechar-mapa">X</button>
+                            <div id="map"></div>
+                        </div>
+                        <div class="row">
+                            <span>
+                                <label>Logradouro</label>
+                                <input type="text" id="logradouro" disabled>
+                            </span>
+                            <span>
+                                <label>Número</label>
+                                <input type="text" id="numero">
+                            </span>
+                            <span>
+                                <label>Bairro</label>
+                                <input type="text" id="bairro" disabled>
+                            </span>
+                            <span>
+                                <label>Complemento</label>
+                                <input type="text" id="complemento">
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>
+                                <label>Cidade</label>
+                                <input type="text" id="cidade" disabled>
+                            </span>
+                            <span>
+                                <label>Estado</label>
+                                <input type="text" id="estado" disabled>
+                            </span>
+                            <span>
+                                <label>País</label>
+                                <input type="text" id="pais" disabled>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>
+                                <label>Latitude</label>
+                                <input type="text" id="latitude" disabled>
+                            </span>
+                            <span>
+                                <label>Longitude</label>
+                                <input type="text" id="longitude" disabled>
+                            </span>
+                        </div>
+
+                        <button type="submit" class="btn save">Salvar</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script> 
+</body>
+</html>

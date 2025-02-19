@@ -68,6 +68,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
 header {
     display: flex;
     justify-content: space-between;
@@ -94,12 +95,14 @@ header nav input[type="text"] {
 }
 
 header nav .btn {
+    display: flex;
     padding: 10px 20px;
     background-color: #1abc9c;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    gap: 10px;
     transition: background-color 0.3s ease;
 }
 
@@ -109,6 +112,17 @@ header nav .btn:hover {
 
 header nav .btn-pesquisar {
     background-color: #3498db;
+    color: white;
+    width: 105px;
+    height: 35px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+header nav .btn-pesquisar img{
+    margin-right: 4px;
+    width: 15px;
+    height: 15px;
 }
 
 header nav .btn-pesquisar:hover {
@@ -128,7 +142,10 @@ header nav .btn-pesquisar:hover {
 .span-header-2 .p2 {
     color: #1abc9c;
 }
-
+.img-plus{
+    width: 20px;
+    height: 20px;
+}
 /* Form Container */
 .form-container {
     background-color: #f9f9f9;
@@ -176,6 +193,11 @@ header nav .btn-pesquisar:hover {
 .form-layout .row span {
     flex: 1;
 }
+.input-peso{
+    text-align: center;
+    width: 4%;
+    height: 35px;
+}
 
 #contacts {
     margin-top: 20px;
@@ -194,6 +216,8 @@ header nav .btn-pesquisar:hover {
 }
 
 #contacts nav button {
+    display: flex;
+    gap: 10px;
     padding: 10px 20px;
     background-color: #3498db;
     color: #fff;
@@ -214,8 +238,23 @@ header nav .btn-pesquisar:hover {
     border: 1px solid #ddd;
     margin-bottom: 10px;
 }
+.contact select{
+    margin-bottom: 15px;
+}
+.remove-contact{
+    background: url(src/images/delete.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    border: none;
+    position: relative;
+    left: 98.5%;
+    bottom: 120px;
+    cursor: pointer;
+}
 
-.btn.save {
+.btn.save, .btn-loc {
     background-color: #1abc9c;
     color: #fff;
     padding: 10px 20px;
@@ -227,6 +266,34 @@ header nav .btn-pesquisar:hover {
 
 .btn.save:hover {
     background-color: #16a085;
+}
+.btn-loc{
+    margin-top: 10px;
+}
+#map-container{
+    display: none; 
+    position: relative;
+}
+#map{
+    height: 450px; 
+    width: 100%;
+    z-index: 0;
+}
+#fechar-mapa{
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: red; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    cursor: pointer; 
+    font-size: 16px;
+    border-radius: 5px;
+    z-index: 1;
+}
+#cpf-cliente{
+    width: 10vw;
 }
 
 /* Responsividade */
@@ -253,5 +320,12 @@ header nav .btn-pesquisar:hover {
 
     .form-layout .row {
         flex-direction: column;
+    }
+    .remove-contact{
+        width: 15px;
+        height: 15px;
+        left: 96%;
+        bottom: 115px;
+
     }
 }
