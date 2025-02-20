@@ -538,12 +538,20 @@ const docTemplate = `{
             "description": "Dados da entrega",
             "type": "object",
             "required": [
+                "birth_date",
+                "cnpj",
                 "cpf",
                 "email",
                 "name",
                 "phone"
             ],
             "properties": {
+                "birth_date": {
+                    "type": "string"
+                },
+                "cnpj": {
+                    "type": "string"
+                },
                 "cpf": {
                     "type": "string"
                 },

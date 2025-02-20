@@ -64,6 +64,11 @@ func validateClient(client *Client) error {
 	// Cria uma nova instância do validator.
 	validate := validator.New()
 
+	// Registra a validação personalizada para a data de nascimento e CNPJ.
+	validate.RegisterValidation("birthdate", isValidBirthdateValidator)
+	validate.RegisterValidation("cnpj", isValidCNPJValidator)
+
+
 	// Valida os campos obrigatórios da struct Client.
 	// Se algum campo obrigatório estiver faltando ou for inválido, retorna um erro.
 	if err := validate.Struct(client); err != nil {
@@ -73,11 +78,6 @@ func validateClient(client *Client) error {
 	// Valida o formato do CPF usando uma expressão regular.
 	if !isValidCPF(client.CPF) {
 		return fmt.Errorf("invalid CPF")
-	}
-
-	// Valida o formato do CNPJ usando uma expressão regular.
-	if !isValidCNPJ(client.CNPJ) {
-		return fmt.Errorf("invalid CNPJ")
 	}
 
 	// Valida o formato do e-mail usando uma expressão regular.
@@ -98,6 +98,10 @@ func validateClient(client *Client) error {
 	// Valida a data de nascimento. A pessoa deve ter pelo menos 18 anos.
 	if !isValidBirthdate(client.BirthDate) {
 		return fmt.Errorf("invalid birthdate or client is underage")
+	}
+	// Valida o CNPJ, se fornecido.
+	if client.CNPJ != "" && !isValidCNPJ(client.CNPJ) {
+		return fmt.Errorf("invalid CNPJ format")
 	}
 	// Se todas as validações passarem, retorna nil (sem erros).
 	return nil
@@ -123,24 +127,49 @@ func isValidPhone(phone string) bool {
 	re := regexp.MustCompile(`^\(?\d{2}\)?\s?\d{4,5}-\d{4}$`)
 	return re.MatchString(phone)
 }
-// isValidCNPJ verifica se o CNPJ está no formato correto usando uma expressão regular.
-// O formato esperado é XX.XXX.XXX/XXXX-XX.
+
+// isValidBirthdateValidator é a função personalizada que valida a data de nascimento no formato "YYYY-MM-DD".
+func isValidBirthdateValidator(fl validator.FieldLevel) bool {
+	birthdate := fl.Field().String()
+	// Verifica se a data de nascimento é válida e se a pessoa tem 18 anos ou mais.
+	return isValidBirthdate(birthdate)
+}
+
+func isValidBirthdate(birthdate string) bool {
+	// Verifica se o formato da data está correto
+	re := regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
+	if !re.MatchString(birthdate) {
+		return false // Se o formato não for válido, retorna falso
+	}
+
+	// Converte a string para time.Time
+	parsedDate, err := time.Parse("2006-01-02", birthdate)
+	if err != nil {
+		return false // Se a conversão falhar, retorna falso
+	}
+
+	// Verifica a idade
+	age := time.Now().Year() - parsedDate.Year()
+	if time.Now().YearDay() < parsedDate.YearDay() {
+		age-- // Ajuste caso o cliente ainda não tenha feito aniversário este ano
+	}
+
+	// Verifica se a idade é maior ou igual a 18 anos
+	return age >= 18
+}
+// isValidCNPJValidator é a função personalizada que valida o CNPJ no formato "XX.XXX.XXX/0001-XX".
+func isValidCNPJValidator(fl validator.FieldLevel) bool {
+	cnpj := fl.Field().String()
+	// Verifica se o formato do CNPJ é válido usando expressão regular.
+	return isValidCNPJ(cnpj)
+}
+
+// isValidCNPJ verifica se o CNPJ está no formato correto utilizando uma expressão regular.
 func isValidCNPJ(cnpj string) bool {
-	re := regexp.MustCompile(`^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$`)
+	re := regexp.MustCompile(`^\d{2}\.\d{3}\.\d{3}/0001-\d{2}$`)
 	return re.MatchString(cnpj)
 }
 
-// isValidBirthdate verifica se a data de nascimento é válida e se o cliente tem pelo menos 18 anos.
-func isValidBirthdate(birthdate time.Time) bool {
-	// Verifica se o cliente tem pelo menos 18 anos
-	age := time.Now().Year() - birthdate.Year()
-	if age < 18 {
-		return false
-	}
-
-	// Se a data de nascimento é válida e a idade é maior ou igual a 18 anos, retorna true.
-	return true
-}
 // GetClients é um handler HTTP para retornar todos os clientes cadastrados.
 // @Summary Obtém a lista de todos os clientes
 // @Description Retorna todos os clientes cadastrados na base de dados

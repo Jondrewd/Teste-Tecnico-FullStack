@@ -3,6 +3,10 @@ definitions:
   clients.Client:
     description: Dados da entrega
     properties:
+      birth_date:
+        type: string
+      cnpj:
+        type: string
       cpf:
         type: string
       deliveries:
@@ -18,6 +22,8 @@ definitions:
       phone:
         type: string
     required:
+    - birth_date
+    - cnpj
     - cpf
     - email
     - name
