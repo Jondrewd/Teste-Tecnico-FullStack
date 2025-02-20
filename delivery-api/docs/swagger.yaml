@@ -1,0 +1,400 @@
+basePath: /api/v1
+definitions:
+  clients.Client:
+    description: Dados da entrega
+    properties:
+      cpf:
+        type: string
+      deliveries:
+        items:
+          $ref: '#/definitions/deliveries.Delivery'
+        type: array
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+    required:
+    - cpf
+    - email
+    - name
+    - phone
+    type: object
+  deliveries.Delivery:
+    description: Dados da entrega
+    properties:
+      address:
+        type: string
+      client_name:
+        type: string
+      cpf:
+        description: Criando um índice para otimizar consultas
+        type: string
+      id:
+        type: integer
+      latitude:
+        type: number
+      longitude:
+        type: number
+      order_status:
+        type: string
+      test_name:
+        type: string
+      weight:
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: example@example.com
+    name: Nome do Contato
+    url: http://www.example.com
+  description: Esta é a documentação da API de entregas e clientes utilizando Gin
+    e Swagger.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+paths:
+  /clients:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todos os clientes cadastrados na base de dados
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/clients.Client'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Obtém a lista de todos os clientes
+      tags:
+      - Clients
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo cliente com validações de CPF, e-mail, telefone, nome
+        e endereço
+      parameters:
+      - description: Cliente a ser criado
+        in: body
+        name: Client
+        required: true
+        schema:
+          $ref: '#/definitions/clients.Client'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/clients.Client'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Cria um novo cliente
+      tags:
+      - Clients
+  /clients/{cpf}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna os dados de um cliente com base no CPF informado.
+      parameters:
+      - description: CPF do Cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/clients.Client'
+        "400":
+          description: Bad Request
+        "404":
+          description: Cliente não encontrado
+      summary: Buscar cliente por CPF
+      tags:
+      - Clients
+  /clients/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um cliente da base de dados pelo seu ID
+      parameters:
+      - description: ID do cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Deleta um cliente pelo ID
+      tags:
+      - Clients
+    get:
+      consumes:
+      - application/json
+      description: Retorna um cliente específico através do seu ID
+      parameters:
+      - description: ID do cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/clients.Client'
+        "400":
+          description: Bad Request
+      summary: Obtém um cliente pelo ID
+      tags:
+      - Clients
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de um cliente existente através do seu ID
+      parameters:
+      - description: ID do cliente
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Cliente com dados atualizados
+        in: body
+        name: Client
+        required: true
+        schema:
+          $ref: '#/definitions/clients.Client'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/clients.Client'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Atualiza as informações de um cliente
+      tags:
+      - Clients
+  /clients/count:
+    get:
+      consumes:
+      - application/json
+      description: Retorna a quantidade total de clientes cadastrados no sistema.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Total de clientes
+        "500":
+          description: Erro ao obter a contagem de clientes
+      summary: Obter número total de clientes
+      tags:
+      - Clients
+  /deliveries:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as entregas cadastradas na base de dados
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/deliveries.Delivery'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Obtém a lista de todas as entregas
+      tags:
+      - Deliveries
+    post:
+      consumes:
+      - application/json
+      description: Cria uma nova entrega com validações de peso e status de pedido
+      parameters:
+      - description: Entrega a ser criada
+        in: body
+        name: Delivery
+        required: true
+        schema:
+          $ref: '#/definitions/deliveries.Delivery'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/deliveries.Delivery'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Cria uma nova entrega
+      tags:
+      - Deliveries
+  /deliveries/{cpf}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as entregas associadas a um CPF.
+      parameters:
+      - description: CPF do Cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/deliveries.Delivery'
+            type: array
+        "400":
+          description: CPF inválido
+        "404":
+          description: Nenhuma entrega encontrada
+      summary: Buscar entregas por CPF
+      tags:
+      - Deliveries
+  /deliveries/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove uma entrega da base de dados pelo seu ID
+      parameters:
+      - description: ID da entrega
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Deleta uma entrega pelo ID
+      tags:
+      - Deliveries
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma entrega específica através do seu ID
+      parameters:
+      - description: ID da entrega
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deliveries.Delivery'
+        "400":
+          description: Bad Request
+      summary: Obtém uma entrega pelo ID
+      tags:
+      - Deliveries
+    put:
+      consumes:
+      - application/json
+      description: Atualiza os dados de uma entrega existente através do seu ID
+      parameters:
+      - description: ID da entrega
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Entrega com dados atualizados
+        in: body
+        name: Delivery
+        required: true
+        schema:
+          $ref: '#/definitions/deliveries.Delivery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deliveries.Delivery'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Atualiza as informações de uma entrega
+      tags:
+      - Deliveries
+  /deliveries/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Atualiza o status de uma entrega com base no ID da entrega.
+      parameters:
+      - description: ID da Entrega
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Novo Status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/deliveries.Delivery'
+        "400":
+          description: Requisição inválida
+        "404":
+          description: Entrega não encontrada
+      summary: Atualizar status do pedido
+      tags:
+      - Deliveries
+schemes:
+- http
+swagger: "2.0"
