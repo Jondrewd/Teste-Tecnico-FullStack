@@ -3,6 +3,7 @@ module delivery-api
 go 1.24.0
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/gin-contrib/cors v1.7.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/swaggo/files v1.0.1
@@ -10,6 +11,14 @@ require (
 	github.com/swaggo/swag v1.16.4
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gorm v1.25.12
+)
+
+require github.com/stretchr/objx v0.5.2 // indirect
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.10.0
 )
 
 require (

@@ -23,19 +23,24 @@
             <header>
                 <h1>PEDIDOS</h1>
                 <nav>
-                    <button class="btn">+ NOVO PEDIDO</button>
+                    <button class="btn" onclick="abrirFormularioPedido()">+ NOVO PEDIDO</button>
                     <span>
-                        <input type="text" placeholder="Pesquisar por...">
-                        <button class="btn-pesquisar">PESQUISAR</button>
+                        <select id="criterio-pesquisa">
+                            <option value="city">Cidade</option>
+                            <option value="name">Nome</option>
+                            <option value="cpf">CPF</option>
+                        </select>
+                        <input type="text" id="valor-pesquisa" placeholder="Digite para pesquisar...">
+                        <button class="btn-pesquisar" onclick="pesquisarPedidos()">PESQUISAR</button>
                     </span>
                     <button class="btn">EXPORTAR PARA EXCEL</button>
-                    <span class="span-header-2">
-                        <p class="p1">TOTAL</p> 
-                        <p class="p2">120 pedido(s)</p>
-                    </span>
                 </nav>
             </header>
-            <section class="form-container">
+            <section id="pedidos">
+
+            </section>
+            
+            <section class="cadastrar-pedido form-container">
                 <h2>CADASTRO DE PEDIDOS</h2>
                 <div class="form-layout">
                     <form id="order-form">
@@ -59,9 +64,9 @@
                         </span>
 
                         <nav>
-                            <label>CEP*</label>
-                            <input type="text" id="cep" required>
-                            <button type="button" id="buscar-cep" class="btn-loc">Buscar CEP</button>
+                            <label>Endereço Completo*</label>
+                            <input type="text" id="endereco" required placeholder="Ex: Rua Exemplo, 123, Bairro, Cidade, Estado, País">
+                            <button type="button" id="buscar-endereco" class="btn-loc">Buscar Endereço</button>
                             <button type="button" id="ver-mapa" class="btn-loc">Ver no mapa</button>
                         </nav>
                         <div id="map-container">
@@ -86,7 +91,7 @@
                                 <input type="text" id="complemento">
                             </span>
                         </div>
-
+                        
                         <div class="row">
                             <span>
                                 <label>Cidade</label>
@@ -101,7 +106,7 @@
                                 <input type="text" id="pais" disabled>
                             </span>
                         </div>
-
+                        
                         <div class="row">
                             <span>
                                 <label>Latitude</label>
@@ -112,8 +117,8 @@
                                 <input type="text" id="longitude" disabled>
                             </span>
                         </div>
-
                         <button type="submit" class="btn save">Salvar</button>
+                        <button type="button" class="btn cancelar" onclick="fecharFormularioPedido()">Cancelar</button>
                     </form>
                 </div>
             </section>

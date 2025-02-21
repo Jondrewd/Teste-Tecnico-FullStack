@@ -10,6 +10,7 @@ type Service interface {
 	DeleteClient(id uint) error                       // Deleta um cliente pelo ID
 	GetClientByCPF(cpf string) (*Client, error)       // Busca um cliente pelo CPF
 	GetTotalClients() (int64, error)                  // Retorna o número total de clientes
+	GetClientByName(name string) ([]Client, error)
 }
 
 // service é uma struct que implementa a interface Service.
@@ -58,6 +59,11 @@ func (s *service) DeleteClient(id uint) error {
 // Ele delega a operação para o repositório (Repository) e retorna o cliente encontrado ou um erro.
 func (s *service) GetClientByCPF(cpf string) (*Client, error) {
 	return s.repo.FindByCPF(cpf)
+}
+// GetClientByName implementa a lógica para buscar um cliente pelo Nome.
+// Ele delega a operação para o repositório (Repository) e retorna o cliente encontrado ou um erro.
+func (s *service) GetClientByName(name string) ([]Client, error) {
+	return s.repo.FindByName(name)
 }
 
 // GetTotalClients implementa a lógica para retornar o número total de clientes cadastrados.

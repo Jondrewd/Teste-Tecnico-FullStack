@@ -1,3 +1,4 @@
+/* Reset e Estilos Globais */
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@ body {
     line-height: 1.6;
 }
 
+/* Layout Principal */
 .container {
     display: flex;
     min-height: 100vh;
@@ -58,7 +60,7 @@ body {
     background-color: #1abc9c;
 }
 
-/* Main Content */
+/* Conteúdo Principal */
 .content {
     flex: 1;
     padding: 20px;
@@ -68,7 +70,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
@@ -119,7 +121,8 @@ header nav .btn-pesquisar {
     border: none;
     cursor: pointer;
 }
-header nav .btn-pesquisar img{
+
+header nav .btn-pesquisar img {
     margin-right: 4px;
     width: 15px;
     height: 15px;
@@ -142,19 +145,76 @@ header nav .btn-pesquisar:hover {
 .span-header-2 .p2 {
     color: #1abc9c;
 }
-.img-plus{
-    width: 20px;
-    height: 20px;
+
+/* Seção de Clientes */
+#clientes {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
 }
-/* Form Container */
-.form-container {
+
+.cliente-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.cliente-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cliente-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.cliente-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.cliente-acoes button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cliente-acoes button:hover {
+    background-color: #0056b3;
+}
+
+.cliente-acoes button:last-child {
+    background-color: #dc3545;
+}
+
+.cliente-acoes button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* Formulário de Cadastro */
+.cadastrar-cliente {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-container h2 {
+.cadastrar-cliente h2 {
     font-size: 1.5rem;
     color: #2c3e50;
     margin-bottom: 20px;
@@ -193,12 +253,14 @@ header nav .btn-pesquisar:hover {
 .form-layout .row span {
     flex: 1;
 }
-.input-peso{
+
+.input-peso {
     text-align: center;
     width: 4%;
     height: 35px;
 }
 
+/* Seção de Contatos */
 #contacts {
     margin-top: 20px;
 }
@@ -238,10 +300,12 @@ header nav .btn-pesquisar:hover {
     border: 1px solid #ddd;
     margin-bottom: 10px;
 }
-.contact select{
+
+.contact select {
     margin-bottom: 15px;
 }
-.remove-contact{
+
+.remove-contact {
     background: url(src/images/delete.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -254,46 +318,172 @@ header nav .btn-pesquisar:hover {
     cursor: pointer;
 }
 
-.btn.save, .btn-loc {
-    background-color: #1abc9c;
+/* Botões */
+.btn.save,
+.btn-loc,
+.btn.cancelar {
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 20px;
     transition: background-color 0.3s ease;
+}
+
+.btn.save,
+.btn-loc {
+    background-color: #1abc9c;
+}
+
+.btn.cancelar {
+    background-color: red;
 }
 
 .btn.save:hover {
     background-color: #16a085;
 }
-.btn-loc{
+
+.btn-loc {
     margin-top: 10px;
 }
-#map-container{
-    display: none; 
+
+/* Mapa */
+#map-container {
+    display: none;
     position: relative;
 }
-#map{
-    height: 450px; 
+
+#map {
+    height: 450px;
     width: 100%;
     z-index: 0;
 }
-#fechar-mapa{
-    position: absolute; 
-    top: 10px; 
-    right: 10px; 
-    background: red; 
-    color: white; 
-    border: none; 
-    padding: 5px 10px; 
-    cursor: pointer; 
+
+#fechar-mapa {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
     font-size: 16px;
     border-radius: 5px;
     z-index: 1;
 }
-#cpf-cliente{
-    width: 10vw;
+
+.mapa-pedido {
+    height: 300px;
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    display: none;
+}
+
+/* Seção de Pedidos */
+#pedidos {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+.cadastrar-pedido{
+    display: none;
+}
+
+.pedido-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.pedido-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-info {
+    flex: 1;
+}
+
+.pedido-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.pedido-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.pedido-acoes button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pedido-acoes button:hover {
+    background-color: #0056b3;
+}
+
+.pedido-acoes button:last-child {
+    background-color: #dc3545;
+}
+
+.pedido-acoes button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* Mensagem de Nenhum Pedido */
+#pedidos p {
+    text-align: center;
+    color: #777;
+    font-size: 16px;
+}
+
+/* Campo de Pesquisa */
+#criterio-pesquisa {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#valor-pesquisa {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.btn-pesquisar {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-pesquisar:hover {
+    background-color: #0056b3;
 }
 
 /* Responsividade */
@@ -321,11 +511,11 @@ header nav .btn-pesquisar:hover {
     .form-layout .row {
         flex-direction: column;
     }
-    .remove-contact{
+
+    .remove-contact {
         width: 15px;
         height: 15px;
         left: 96%;
         bottom: 115px;
-
     }
 }

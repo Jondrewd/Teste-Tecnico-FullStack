@@ -13,6 +13,8 @@ type Service interface {
 	UpdateDelivery(id uint, delivery *Delivery) (*Delivery, error) // Atualiza uma entrega
 	DeleteDelivery(id uint) error                            // Deleta uma entrega pelo ID
 	GetDeliveriesByCPF(cpf string) ([]Delivery, error)       // Busca entregas por CPF
+	GetDeliveriesByCity(city string) ([]Delivery, error)       // Busca entregas por cidade
+	GetDeliveriesByClientName(clientName string) ([]Delivery, error) // Busca entregas por Nome do cliente
 	UpdateOrderStatus(id uint, status string) error          // Atualiza o status de uma entrega
 }
 
@@ -74,6 +76,17 @@ func (s *service) DeleteDelivery(id uint) error {
 // Ele delega a operação para o repositório.
 func (s *service) GetDeliveriesByCPF(cpf string) ([]Delivery, error) {
 	return s.repo.FindByCPF(cpf)
+}
+// GetDeliveriesByCity implementa a lógica para buscar entregas associadas a um CPF específico.
+// Ele delega a operação para o repositório.
+func (s *service) GetDeliveriesByCity(city string) ([]Delivery, error) {
+	return s.repo.FindByCity(city)
+}
+
+// GetDeliveriesByName implementa a lógica para buscar entregas associadas a um Name específico.
+// Ele delega a operação para o repositório.
+func (s *service) GetDeliveriesByClientName(clientName string) ([]Delivery, error) {
+	return s.repo.FindByClientName(clientName)
 }
 
 // UpdateOrderStatus implementa a lógica para atualizar o status de uma entrega.

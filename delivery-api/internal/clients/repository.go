@@ -1,6 +1,10 @@
 package clients
 
-import "gorm.io/gorm"
+import (
+	"strings"
+
+	"gorm.io/gorm"
+)
 
 // Repository é uma interface que define os métodos necessários para operações de banco de dados relacionadas a clientes.
 // Essa interface permite que diferentes implementações de repositório sejam usadas, facilitando testes e manutenção.
@@ -12,6 +16,7 @@ type Repository interface {
 	DeleteClient(id uint) error                       // Deleta um cliente pelo ID
 	FindByCPF(cpf string) (*Client, error)            // Busca um cliente pelo CPF
 	CountClients() (int64, error)                     // Retorna o total de clientes cadastrados
+	FindByName(name string) ([]Client, error)
 }
 
 // repository é uma struct que implementa a interface Repository.
@@ -44,6 +49,9 @@ func (r *repository) GetClients() ([]Client, error) {
 	if err := r.db.Find(&clients).Error; err != nil {
 		return nil, err
 	}
+	if err := r.db.Preload("Deliveries").Find(&clients).Error; err != nil {
+        return nil, err
+		}
 	return clients, nil
 }
 
@@ -55,6 +63,9 @@ func (r *repository) GetClientByID(id uint) (*Client, error) {
 	if err := r.db.First(&client, id).Error; err != nil {
 		return nil, err
 	}
+	if err := r.db.Preload("Deliveries").Find(&client).Error; err != nil {
+        return nil, err
+		}
 	return &client, nil
 }
 
@@ -94,8 +105,33 @@ func (r *repository) FindByCPF(cpf string) (*Client, error) {
 	if err := r.db.Where("cpf = ?", cpf).First(&client).Error; err != nil {
 		return nil, err
 	}
+	if err := r.db.Preload("Deliveries").Find(&client).Error; err != nil {
+        return nil, err
+		}
 	return &client, nil
 }
+
+// FindByName busca múltiplos clientes no banco de dados com base em uma correspondência parcial do nome.
+// Usa o método Where do GORM com LIKE para filtrar os registros pelo nome, garantindo que o nome comece com o termo fornecido.
+// A busca não será sensível a maiúsculas/minúsculas.
+func (r *repository) FindByName(name string) ([]Client, error) {
+	var clients []Client
+
+	// Converte o nome para minúsculas e adiciona o operador LIKE
+	searchTerm := strings.ToLower(name) + "%"
+
+	// Realiza a busca com a cláusula WHERE e o Preload em uma única consulta
+	if err := r.db.
+		Where("LOWER(name) LIKE ?", searchTerm). // Filtra pelo nome
+		Preload("Deliveries").                  // Carrega as entregas associadas
+		Find(&clients).                         // Executa a consulta
+		Error; err != nil {
+		return nil, err
+	}
+
+	return clients, nil
+}
+
 
 // CountClients retorna o número total de clientes cadastrados no banco de dados.
 // Usa o método Count do GORM para contar os registros na tabela de clientes.

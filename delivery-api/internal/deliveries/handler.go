@@ -205,7 +205,7 @@ func validateDelivery(delivery *Delivery) error {
 
 	// Verifica se o status da entrega é válido.
 	if !isValidOrderStatus(delivery.OrderStatus) {
-		return fmt.Errorf("invalid order status, must be one of: 'Pending', 'Shipped', 'Delivered', 'Canceled'")
+		return fmt.Errorf("invalid order status, must be one of: 'Pendente', 'Enviado', 'Entregue', 'Cancelado'")
 	}
 
 	// Se todas as validações passarem, retorna nil (sem erros).
@@ -222,7 +222,7 @@ func validateDelivery(delivery *Delivery) error {
 // @Success 200 {array} Delivery
 // @Failure 400 "CPF inválido"
 // @Failure 404 "Nenhuma entrega encontrada"
-// @Router /deliveries/{cpf} [get]
+// @Router /deliveries/client/cpf/{cpf} [get]
 func (h *Handler) GetDeliveriesByCPF(c *gin.Context) {
 	// Obtém o CPF da URL.
 	cpf := c.Param("cpf")
@@ -238,6 +238,60 @@ func (h *Handler) GetDeliveriesByCPF(c *gin.Context) {
 	// Retorna a lista de entregas com status 200 (OK).
 	c.JSON(http.StatusOK, deliveries)
 }
+
+// GetDeliveriesByCity é um handler HTTP para buscar todas as entregas associadas a uma cidade.
+// @Summary Buscar entregas por cidade
+// @Description Retorna todas as entregas associadas a uma cidade.
+// @Tags Deliveries
+// @Accept  json
+// @Produce  json
+// @Param city path string true "Nome da Cidade"
+// @Success 200 {array} Delivery
+// @Failure 400 "Cidade inválida"
+// @Failure 404 "Nenhuma entrega encontrada"
+// @Router /deliveries/city/{city} [get]
+func (h *Handler) GetDeliveriesByCity(c *gin.Context) {
+    // Obtém o nome da cidade da URL.
+    city := c.Param("city")
+
+    // Chama o método GetDeliveriesByCity do serviço para buscar as entregas pela cidade.
+    deliveries, err := h.Service.GetDeliveriesByCity(city)
+    if err != nil {
+        // Se nenhuma entrega for encontrada, retorna um erro 404 (Not Found).
+        c.JSON(http.StatusNotFound, gin.H{"error": "Nenhuma entrega encontrada"})
+        return
+    }
+
+    // Retorna a lista de entregas com status 200 (OK).
+    c.JSON(http.StatusOK, deliveries)
+}
+// GetDeliveriesByClientName é um handler HTTP para buscar todas as entregas associadas a um cliente pelo nome.
+// @Summary Buscar entregas por nome do cliente
+// @Description Retorna todas as entregas associadas ao nome de um cliente.
+// @Tags Deliveries
+// @Accept  json
+// @Produce  json
+// @Param name path string true "Nome do Cliente"
+// @Success 200 {array} Delivery
+// @Failure 400 "Nome inválido"
+// @Failure 404 "Nenhuma entrega encontrada"
+// @Router /deliveries/client/name/{name} [get]
+func (h *Handler) GetDeliveriesByClientName(c *gin.Context) {
+	// Obtém o nome do cliente da URL
+	name := c.Param("name")
+
+	// Chama o método FindByClientName do serviço para buscar as entregas associadas ao nome do cliente
+	deliveries, err := h.Service.GetDeliveriesByClientName(name)
+	if err != nil {
+		// Se nenhuma entrega for encontrada, retorna um erro 404 (Not Found)
+		c.JSON(http.StatusNotFound, gin.H{"error": "Nenhuma entrega encontrada"})
+		return
+	}
+
+	// Retorna a lista de entregas com status 200 (OK)
+	c.JSON(http.StatusOK, deliveries)
+}
+
 
 // UpdateOrderStatus é um handler HTTP para atualizar o status de uma entrega.
 // @Summary Atualizar status do pedido

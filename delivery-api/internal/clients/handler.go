@@ -314,7 +314,7 @@ func (h *Handler) DeleteClient(c *gin.Context) {
 // @Success 200 {object} Client
 // @Failure 400 "Bad Request"
 // @Failure 404 "Cliente não encontrado"
-// @Router /clients/{cpf} [get]
+// @Router /clients/cpf/{cpf} [get]
 func (h *Handler) GetClientByCPF(c *gin.Context) {
 	// Obtém o CPF do cliente da URL.
 	cpf := c.Param("cpf")
@@ -330,6 +330,34 @@ func (h *Handler) GetClientByCPF(c *gin.Context) {
 	// Retorna o cliente encontrado com status 200 (OK).
 	c.JSON(http.StatusOK, client)
 }
+
+// GetClientsByName é um handler HTTP para buscar clientes pelo nome.
+// @Summary Buscar clientes por nome
+// @Description Retorna os dados dos clientes com base no nome informado.
+// @Tags Clients
+// @Accept  json
+// @Produce  json
+// @Param name path string true "Nome do Cliente"
+// @Success 200 {array} Client
+// @Failure 400 "Bad Request"
+// @Failure 404 "Nenhum cliente encontrado"
+// @Router /clients/name/{name} [get]
+func (h *Handler) GetClientsByName(c *gin.Context) {
+	// Obtém o nome do cliente da URL.
+	name := c.Param("name")
+
+	// Chama o método GetClientsByName do serviço para buscar os clientes pelo nome.
+	clients, err := h.Service.GetClientByName(name)
+	if err != nil {
+		// Se nenhum cliente for encontrado, retorna um erro 404 (Not Found).
+		c.JSON(http.StatusNotFound, gin.H{"error": "Nenhum cliente encontrado"})
+		return
+	}
+
+	// Retorna os clientes encontrados com status 200 (OK).
+	c.JSON(http.StatusOK, clients)
+}
+
 
 // GetTotalClients é um handler HTTP para retornar o número total de clientes cadastrados.
 // @Summary Obter número total de clientes

@@ -1,8 +1,10 @@
 package deliveries
 
 import (
-	"gorm.io/gorm"
 	"errors"
+	"strings"
+
+	"gorm.io/gorm"
 )
 
 // Repository é uma interface que define os métodos que o repositório deve implementar.
@@ -14,6 +16,8 @@ type Repository interface {
 	UpdateDelivery(id uint, delivery *Delivery) (*Delivery, error) // Atualiza uma entrega
 	DeleteDelivery(id uint) error                        // Deleta uma entrega pelo ID
 	FindByCPF(cpf string) ([]Delivery, error)            // Busca entregas pelo CPF do cliente
+	FindByClientName(name string) ([]Delivery, error) // Busca entregas pelo Nome do cliente
+	FindByCity(city string) ([]Delivery, error) // Busca entregas pelo Nome da cidade
 	UpdateOrderStatus(id uint, status string) error      // Atualiza o status de uma entrega
 }
 
@@ -108,11 +112,54 @@ func (r *repository) DeleteDelivery(id uint) error {
 // Retorna a lista de entregas ou um erro, caso ocorra algum problema.
 func (r *repository) FindByCPF(cpf string) ([]Delivery, error) {
 	var deliveries []Delivery
-	if err := r.db.Where("cpf = ?", cpf).Find(&deliveries).Error; err != nil {
+	if err := r.db.Where("client_cpf = ?", cpf).Find(&deliveries).Error; err != nil {
 		return nil, err
 	}
 	return deliveries, nil
 }
+
+// FindByClientName busca múltiplas entregas associadas a um cliente no banco de dados com base em uma correspondência parcial do nome do cliente.
+// Usa o método Where do GORM com LIKE para filtrar os registros pelo nome do cliente.
+// A busca não será sensível a maiúsculas/minúsculas.
+func (r *repository) FindByClientName(name string) ([]Delivery, error) {
+	var deliveries []Delivery
+
+	// Converte o nome para minúsculas e adiciona o operador LIKE
+	searchTerm := strings.ToLower(name) + "%"
+
+	// Realiza a busca com a cláusula WHERE e o Preload em uma única consulta
+	if err := r.db.
+		// Realiza a busca no nome do cliente associado à entrega
+		Joins("JOIN clients c ON c.name = deliveries.client_name").
+		Where("LOWER(c.name) LIKE ?", searchTerm). // Filtra pelo nome do cliente
+		Find(&deliveries).                          // Executa a consulta
+		Error; err != nil {
+		return nil, err
+	}
+
+	return deliveries, nil
+}
+
+// FindByCity busca múltiplas entregas associadas a uma cidade no banco de dados com base em uma correspondência parcial do nome da cidade.
+// Usa o método Where do GORM com LIKE para filtrar os registros pelo nome da cidade.
+// A busca não será sensível a maiúsculas/minúsculas.
+func (r *repository) FindByCity(city string) ([]Delivery, error) {
+	var deliveries []Delivery
+
+	// Converte o nome da cidade para minúsculas e adiciona o operador LIKE
+	searchTerm := strings.ToLower(city) + "%"
+
+	// Realiza a busca com a cláusula WHERE
+	if err := r.db.
+		Where("LOWER(cidade) LIKE ?", searchTerm). // Filtra pelo nome da cidade
+		Find(&deliveries).                         // Executa a consulta
+		Error; err != nil {
+		return nil, err
+	}
+
+	return deliveries, nil
+}
+
 
 // UpdateOrderStatus atualiza o status de uma entrega no banco de dados.
 // Usa o método Update do GORM para alterar o campo "order_status" da entrega com o ID fornecido.

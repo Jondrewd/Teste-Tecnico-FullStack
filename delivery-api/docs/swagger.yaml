@@ -32,20 +32,31 @@ definitions:
   deliveries.Delivery:
     description: Dados da entrega
     properties:
-      address:
+      bairro:
+        type: string
+      cidade:
+        type: string
+      client_cpf:
         type: string
       client_name:
         type: string
-      cpf:
-        description: Criando um índice para otimizar consultas
+      complemento:
+        type: string
+      estado:
         type: string
       id:
         type: integer
       latitude:
         type: number
+      logradouro:
+        type: string
       longitude:
         type: number
+      numero:
+        type: string
       order_status:
+        type: string
+      pais:
         type: string
       test_name:
         type: string
@@ -107,31 +118,6 @@ paths:
         "500":
           description: Internal Server Error
       summary: Cria um novo cliente
-      tags:
-      - Clients
-  /clients/{cpf}:
-    get:
-      consumes:
-      - application/json
-      description: Retorna os dados de um cliente com base no CPF informado.
-      parameters:
-      - description: CPF do Cliente
-        in: path
-        name: cpf
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/clients.Client'
-        "400":
-          description: Bad Request
-        "404":
-          description: Cliente não encontrado
-      summary: Buscar cliente por CPF
       tags:
       - Clients
   /clients/{id}:
@@ -224,6 +210,58 @@ paths:
       summary: Obter número total de clientes
       tags:
       - Clients
+  /clients/cpf/{cpf}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna os dados de um cliente com base no CPF informado.
+      parameters:
+      - description: CPF do Cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/clients.Client'
+        "400":
+          description: Bad Request
+        "404":
+          description: Cliente não encontrado
+      summary: Buscar cliente por CPF
+      tags:
+      - Clients
+  /clients/name/{name}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna os dados dos clientes com base no nome informado.
+      parameters:
+      - description: Nome do Cliente
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/clients.Client'
+            type: array
+        "400":
+          description: Bad Request
+        "404":
+          description: Nenhum cliente encontrado
+      summary: Buscar clientes por nome
+      tags:
+      - Clients
   /deliveries:
     get:
       consumes:
@@ -266,33 +304,6 @@ paths:
         "500":
           description: Internal Server Error
       summary: Cria uma nova entrega
-      tags:
-      - Deliveries
-  /deliveries/{cpf}:
-    get:
-      consumes:
-      - application/json
-      description: Retorna todas as entregas associadas a um CPF.
-      parameters:
-      - description: CPF do Cliente
-        in: path
-        name: cpf
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/deliveries.Delivery'
-            type: array
-        "400":
-          description: CPF inválido
-        "404":
-          description: Nenhuma entrega encontrada
-      summary: Buscar entregas por CPF
       tags:
       - Deliveries
   /deliveries/{id}:
@@ -399,6 +410,87 @@ paths:
         "404":
           description: Entrega não encontrada
       summary: Atualizar status do pedido
+      tags:
+      - Deliveries
+  /deliveries/city/{city}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as entregas associadas a uma cidade.
+      parameters:
+      - description: Nome da Cidade
+        in: path
+        name: city
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/deliveries.Delivery'
+            type: array
+        "400":
+          description: Cidade inválida
+        "404":
+          description: Nenhuma entrega encontrada
+      summary: Buscar entregas por cidade
+      tags:
+      - Deliveries
+  /deliveries/client/cpf/{cpf}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as entregas associadas a um CPF.
+      parameters:
+      - description: CPF do Cliente
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/deliveries.Delivery'
+            type: array
+        "400":
+          description: CPF inválido
+        "404":
+          description: Nenhuma entrega encontrada
+      summary: Buscar entregas por CPF
+      tags:
+      - Deliveries
+  /deliveries/client/name/{name}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as entregas associadas ao nome de um cliente.
+      parameters:
+      - description: Nome do Cliente
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/deliveries.Delivery'
+            type: array
+        "400":
+          description: Nome inválido
+        "404":
+          description: Nenhuma entrega encontrada
+      summary: Buscar entregas por nome do cliente
       tags:
       - Deliveries
 schemes:

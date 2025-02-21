@@ -65,6 +65,7 @@ func main() {
 	r.GET("/api/v1/clients", clientHandler.GetClients)            // Retorna todos os clientes
 	r.GET("/api/v1/clients/cpf/:cpf", clientHandler.GetClientByCPF) // Busca um cliente pelo CPF
 	r.GET("/api/v1/clients/:id", clientHandler.GetClientByID)     // Retorna um cliente pelo ID
+	r.GET("/api/v1/clients/name/:name", clientHandler.GetClientsByName)     // Retorna um cliente pelo Nome
 	r.GET("/api/v1/clients/count", clientHandler.GetTotalClients) // Retorna o total de clientes
 	r.PUT("/api/v1/clients/:id", clientHandler.UpdateClient)      // Atualiza um cliente pelo ID
 	r.DELETE("/api/v1/clients/:id", clientHandler.DeleteClient)   // Deleta um cliente pelo ID
@@ -73,7 +74,9 @@ func main() {
 	r.POST("/api/v1/deliveries", deliveryHandler.CreateDelivery)          // Cria uma nova entrega
 	r.GET("/api/v1/deliveries", deliveryHandler.GetDeliveries)           // Retorna todas as entregas
 	r.GET("/api/v1/deliveries/:id", deliveryHandler.GetDeliveryByID)     // Retorna uma entrega pelo ID
-	r.GET("/api/v1/deliveries/cpf/:cpf", deliveryHandler.GetDeliveriesByCPF) // Busca entregas pelo CPF do cliente
+	r.GET("/api/v1/deliveries/client/cpf/:cpf", deliveryHandler.GetDeliveriesByCPF) // Busca entregas pelo CPF do cliente
+	r.GET("/api/v1/deliveries/client/name/:name", deliveryHandler.GetDeliveriesByClientName) // Busca entregas pelo Nome do cliente
+	r.GET("/api/v1/deliveries/city/:city", deliveryHandler.GetDeliveriesByCity) // Busca entregas pelo Nome do cliente
 	r.PUT("/api/v1/deliveries/:id", deliveryHandler.UpdateDelivery)      // Atualiza uma entrega pelo ID
 	r.DELETE("/api/v1/deliveries/:id", deliveryHandler.DeleteDelivery)   // Deleta uma entrega pelo ID
 	r.PATCH("/api/v1/deliveries/:id/:status", deliveryHandler.UpdateOrderStatus) // Atualiza o status de uma entrega

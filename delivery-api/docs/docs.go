@@ -113,7 +113,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/clients/{cpf}": {
+        "/clients/cpf/{cpf}": {
             "get": {
                 "description": "Retorna os dados de um cliente com base no CPF informado.",
                 "consumes": [
@@ -147,6 +147,47 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Cliente não encontrado"
+                    }
+                }
+            }
+        },
+        "/clients/name/{name}": {
+            "get": {
+                "description": "Retorna os dados dos clientes com base no nome informado.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Buscar clientes por nome",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nome do Cliente",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/clients.Client"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Nenhum cliente encontrado"
                     }
                 }
             }
@@ -331,7 +372,48 @@ const docTemplate = `{
                 }
             }
         },
-        "/deliveries/{cpf}": {
+        "/deliveries/city/{city}": {
+            "get": {
+                "description": "Retorna todas as entregas associadas a uma cidade.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Deliveries"
+                ],
+                "summary": "Buscar entregas por cidade",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nome da Cidade",
+                        "name": "city",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/deliveries.Delivery"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Cidade inválida"
+                    },
+                    "404": {
+                        "description": "Nenhuma entrega encontrada"
+                    }
+                }
+            }
+        },
+        "/deliveries/client/cpf/{cpf}": {
             "get": {
                 "description": "Retorna todas as entregas associadas a um CPF.",
                 "consumes": [
@@ -365,6 +447,47 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "CPF inválido"
+                    },
+                    "404": {
+                        "description": "Nenhuma entrega encontrada"
+                    }
+                }
+            }
+        },
+        "/deliveries/client/name/{name}": {
+            "get": {
+                "description": "Retorna todas as entregas associadas ao nome de um cliente.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Deliveries"
+                ],
+                "summary": "Buscar entregas por nome do cliente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nome do Cliente",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/deliveries.Delivery"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nome inválido"
                     },
                     "404": {
                         "description": "Nenhuma entrega encontrada"
@@ -579,14 +702,22 @@ const docTemplate = `{
             "description": "Dados da entrega",
             "type": "object",
             "properties": {
-                "address": {
+                "bairro": {
+                    "type": "string"
+                },
+                "cidade": {
+                    "type": "string"
+                },
+                "client_cpf": {
                     "type": "string"
                 },
                 "client_name": {
                     "type": "string"
                 },
-                "cpf": {
-                    "description": "Criando um índice para otimizar consultas",
+                "complemento": {
+                    "type": "string"
+                },
+                "estado": {
                     "type": "string"
                 },
                 "id": {
@@ -595,10 +726,19 @@ const docTemplate = `{
                 "latitude": {
                     "type": "number"
                 },
+                "logradouro": {
+                    "type": "string"
+                },
                 "longitude": {
                     "type": "number"
                 },
+                "numero": {
+                    "type": "string"
+                },
                 "order_status": {
+                    "type": "string"
+                },
+                "pais": {
                     "type": "string"
                 },
                 "test_name": {
